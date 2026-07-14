@@ -31,7 +31,7 @@ async def on_ready():
    await client.change_presence(activity=discord.Game(name="작동 중"))
 
 @client.event
-asyn
+async
 c def on_message(message):
    # 봇이 스스로 쓴 메시지에는 반응하지 않도록 차단
    if message.author == client.user:
