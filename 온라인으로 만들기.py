@@ -28,7 +28,7 @@ async def on_ready():
        print(client.user.id)
    print("------------------")
    # 최신 버전에서는 change_presence 설정 방식이 아래와 같이 변경되었습니다
-   await client.change_presence(activity=discord.Game(name="작동 중"))
+   await client.change_presence(activity=discord.Game(name="주혁봇"))
 
 @client.event
 async def on_message(message):
