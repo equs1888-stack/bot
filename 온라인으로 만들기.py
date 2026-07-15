@@ -53,8 +53,7 @@ async def info(interaction: discord.Interaction):
    await interaction.response.send_message("저는 주혁님이 만든 아주 똑똑한 디스코드 봇입니다! ?")
 
 @client.event
-async def o
-n_message(message):
+async def on_message(message):
    if message.author == client.user:
        return
    # 기존에 쓰던 일반 채팅 hi 명령어는 그대로 유지됩니다
