@@ -27,8 +27,7 @@ class MyClient(discord.Client):
    async def setup_hook(self):
        # 봇이 켜질 때 슬래시 명령어를 디스코드 서버에 자동으로 등록(동기화)합니다
        await self.tree.sync()
-       print("슬래시 명
-령어 동기화 완료!")
+       print("슬래시 명령어 동기화 완료!")
 
 client = MyClient(intents=intents)
 
