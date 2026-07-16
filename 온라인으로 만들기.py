@@ -6,9 +6,7 @@ from PIL import Image as IM, ImageDraw as ID, ImageFont as IF
 from http.server import SimpleHTTPRequestHandler as SH, HTTPServer as HS
 
 p_num = int(os.getenv("PORT", 10000))
-threading.Thread(
-   target=lambda: HS(("0.0.0.0", p_num), SH).serve_forever(), daemon=True
-).start()
+threading.Thread(target=lambda: HS(("0.0.0.0", p_num), SH).serve_forever(), daemon=True).start()
 
 intents = discord.Intents.default()
 intents.members = True
