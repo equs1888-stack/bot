@@ -2,8 +2,7 @@ import sys,discord,os,threading,io,datetime;sys.modules['audioop']=type(sys)('au
 from discord import app_commands as ac;from PIL import Image as IM,ImageDraw as ID,ImageFont as IF;from http.server import SimpleHTTPRequestHandler as SH,HTTPServer as HS
 threading.Thread(target=lambda:HS(('0.0.0.0',int(os.getenv("PORT",10000))),SH).serve_forever(),daemon=True).start()
 intents=discord.Intents.default();intents.members=True
-class C(discord.Client):
-def __init__(self):super().__init__(intents=intents);self.tree=ac.CommandTree(self)
+class C(discord.Client):def __init__(self):super().__init__(intents=intents);self.tree=ac.CommandTree(self)
 def setup_hook(self):return self.tree.sync()
 cl=C()
 async def crd(u):i=IM.new("RGBA",(1000,500),(30,30,30));d=ID.Draw(i)
