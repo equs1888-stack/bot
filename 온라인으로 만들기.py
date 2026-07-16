@@ -25,8 +25,7 @@ client = MyClient(intents=intents)
    app_commands.Choice(name="하늘색", value="sky"),
    app_commands.Choice(name="검은색", value="black"),
 ])
-async def preview(interaction: discord.Interacti
-on, 옵션: app_commands.Choice[str]):
+async def preview(interaction: discord.Interaction, 옵션: app_commands.Choice[str]):
    await interaction.response.defer()
    bg = (135, 206, 235, 255) if 옵션.value == "sky" else (30, 30, 30, 255)
    img = Image.new("RGBA", (800, 400), bg)
