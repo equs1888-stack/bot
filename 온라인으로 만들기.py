@@ -1,7 +1,6 @@
 import sys
 sys.modules['audioop'] = type(sys)('audioop')
 
-
 import discord, os, threading, io
 from discord import app_commands
 from http.server import SimpleHTTPRequestHandler, HTTPServer
