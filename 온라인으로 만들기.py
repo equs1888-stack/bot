@@ -6,8 +6,7 @@ class C(discord.Client):
 def __init__(self):super().__init__(intents=intents);self.tree=ac.CommandTree(self)
 def setup_hook(self):return self.tree.sync()
 cl=C()
-async def crd(u):
-i=IM.new("RGBA",(1000,500),(30,30,30));d=ID.Draw(i)
+async def crd(u):i=IM.new("RGBA",(1000,500),(30,30,30));d=ID.Draw(i)
 try:font=IF.truetype("DejaVuSans.ttf",50)
 except:font=IF.load_default()
 for y in [270,325,380]:d.rounded_rectangle((50,y,950,y+45),10,(0,0,0,150))
