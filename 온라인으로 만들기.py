@@ -20,8 +20,7 @@ async def crd(u):
    a = Image.open(io.BytesIO(await u.display_avatar.with_size(128).read())).resize((180, 180))
    i.paste(a, (80, 75))
    f = "%Y년 %m월 %d일"
-   dc = (u.crea
-ted_at + datetime.timedelta(hours=9)).strftime(f)
+   dc = (u.created_at + datetime.timedelta(hours=9)).strftime(f)
    d.text((320, 100), f"{u.name[:10]}..님 환영해요!", fill="white")
    d.text((100, 283), f"아이디 : {u.id}", fill="white")
    d.text((100, 338), f"가입일 : {dc}", fill="white")
