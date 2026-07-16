@@ -33,8 +33,7 @@ async def crd(u):
    for y in [270, 325, 380]:
        d.rounded_rectangle((50, y, 950, y + 45), 10, (0, 0, 0, 150))
 
-   av_
-raw = await u.display_avatar.with_size(128).read()
+   av_raw = await u.display_avatar.with_size(128).read()
    a = IM.open(io.BytesIO(av_raw)).resize((180, 180))
    i.paste(a, (80, 75))
 
