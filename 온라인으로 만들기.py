@@ -1,52 +1,31 @@
 import sys
 sys.modules['audioop'] = type(sys)('audioop')
-
 import discord, os, threading, io
 from discord import app_commands
-from http.server import SimpleHTTPRequestHandler, HTTPServer
 from PIL import Image, ImageDraw
-
-def run():
-   HTTPServer(('0.0.0.0', int(os.environ.get("PORT", 10000))), SimpleHTTPRequestHandler).serve_forever()
+from http.server import SimpleHTTPRequestHandler, HTTPServer
+def run(): HTTPServer(('0.0.0.0', int(os.environ.get("PORT", 10000))), SimpleHTTPRequestHandler).serve_forever()
 threading.Thread(target=run, daemon=True).start()
-
-intents = discord.Intents.default()
-intents.message_content = True
-intents.members = True
-
+intents = discord.Intents.default(); intents.members = True
 class MyClient(discord.Client):
-   def __init__(self, *, intents: discord.Intents):
-       super().__init__(intents=intents)
-       self.tree = app_commands.CommandTree(self)
-   async def setup_hook(self):
-       await self.tree.sync()
-
+   def __init__(self, *, intents): super().__init__(intents=intents); self.tree = app_commands.CommandTree(self)
+   async def setup_hook(self): await self.tree.sync()
 client = MyClient(intents=intents)
-
-@client.tree.command(name="환영인사", description="환영 카드를 직접 고르고 테스트해봅니다.")
-@app_commands.choices(옵션=[
-   app_commands.Choice(name="하늘색", value="sky"),
-   app_commands.Choice(name="검은색", value="black"),
-])
-async def preview(interaction: discord.Interaction, 옵션: app_commands.Choice[str]):
-   await interaction.response.defer()
-   bg = (135, 206, 235, 255) if 옵션.value == "sky" else (30, 30, 30, 255)
-   img = Image.new("RGBA", (800, 400), bg)
-   draw = ImageDraw.Draw(img)
-   
-   av_asset = interaction.user.display_avatar.with_format("png").with_size(128)
-   av_img = Image.open(io.BytesIO(await av_asset.read())).convert("RGBA").resize((150, 150))
-   
-   mask = Image.new("L", (150, 150), 0)
-   ImageDraw.Draw(mask).ellipse((0, 0, 150, 150), fill=255)
-   img.paste(av_img, (325, 70), mask)
-   
-   draw.text((400, 260), f"{interaction.user.name}", fill=(255, 255, 255), anchor="mm")
-   draw.text((400, 310), f"Welcome!", fill=(255, 255, 255), anchor="mm")
-   
-   buf = io.BytesIO()
-   img.save(buf, format="PNG")
-   buf.seek(0)
-   await interaction.followup.send(file=discord.File(buf, filename="preview.png"))
-
+async def card(u, t):
+   i = Image.new("RGBA", (800, 400), (135, 206, 235)); d = ImageDraw.Draw(i)
+   av = Image.open(io.BytesIO(await u.display_avatar.with_size(128).read())).resize((150, 150))
+   m = Image.new("L", (150, 150), 0); ImageDraw.Draw(m).ellipse((0,0,150,150), fill=255)
+   i.paste(av,
+(325, 70), m); d.text((400, 260), u.name, fill="white", anchor="mm"); d.text((400, 310), t, fill="white", anchor="mm")
+   b = io.BytesIO(); i.save(b, "PNG"); b.seek(0); return b
+@client.event
+async def on_member_join(m):
+   c = discord.utils.get(m.guild.text_channels, name="안녕하세요")
+   if c: await c.send(f"{m.mention} 환영합니다!", file=discord.File(await card(m, "Welcome!"), "w.png"))
+@client.tree.command(name="환영인사")
+@app_commands.choices(옵션=[app_commands.Choice(name="환영인사 설정", value="set"), app_commands.Choice(name="환영인사 미리보기", value="preview")])
+async def p(i, 옵션: app_commands.Choice[str]):
+   await i.response.defer()
+   if 옵션.value == "preview": await i.followup.send(file=discord.File(await card(i.user, "Preview!"), "p.png"))
+   else: await i.followup.send("설정 완료!")
 client.run(os.environ["BOT_TOKEN"])
