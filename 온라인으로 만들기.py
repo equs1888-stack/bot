@@ -27,10 +27,14 @@ async def crd(u):
     i = Image.new("RGBA", (1000, 500), (30,30,30))
     d = ImageDraw.Draw(i)
    
-    try:
-        font = ImageFont.truetype("DejaVuSans.ttf", 50)
-    except:
-        font = ImageFont.load_default()
+    import urllib.request
+   if not os.path.exists("NanumGothic.ttf"):
+       urllib.request.urlretrieve("https://github.com/google/fonts/raw/main/ofl/nanumgothic/NanumGothic-Bold.ttf", "NanumGothic.ttf")
+   
+   try:
+       font = ImageFont.truetype("NanumGothic.ttf", 40)
+   except:
+       font = ImageFont.load_default()
        
     for y in [270, 325, 380]:
         d.rounded_rectangle((50, y, 950, y+45), 10, (0,0,0,150))
