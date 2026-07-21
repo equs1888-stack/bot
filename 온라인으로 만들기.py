@@ -1,7 +1,7 @@
 import sys
 sys.modules['audioop'] = type(sys)('audioop')
 
-import discord, os, threading, io, datetime
+import discord, os, threading, io, datetime, urllib.request
 from discord import app_commands
 from PIL import Image, ImageDraw, ImageFont
 from http.server import SimpleHTTPRequestHandler, HTTPServer
@@ -26,31 +26,30 @@ cl = C()
 async def crd(u):
     i = Image.new("RGBA", (1000, 500), (30,30,30))
     d = ImageDraw.Draw(i)
-   
-    import urllib.request
-   if not os.path.exists("NanumGothic.ttf"):
-       urllib.request.urlretrieve("https://github.com/google/fonts/raw/main/ofl/nanumgothic/NanumGothic-Bold.ttf", "NanumGothic.ttf")
-   
-   try:
-       font = ImageFont.truetype("NanumGothic.ttf", 40)
-   except:
-       font = ImageFont.load_default()
-       
+    
+    if not os.path.exists("NanumGothic.ttf"):
+        urllib.request.urlretrieve("https://github.com/google/fonts/raw/main/ofl/nanumgothic/NanumGothic-Bold.ttf", "NanumGothic.ttf")
+    
+    try:
+        font = ImageFont.truetype("NanumGothic.ttf", 40)
+    except:
+        font = ImageFont.load_default()
+        
     for y in [270, 325, 380]:
         d.rounded_rectangle((50, y, 950, y+45), 10, (0,0,0,150))
-       
+        
     av_data = await u.display_avatar.with_size(128).read()
     a = Image.open(io.BytesIO(av_data)).resize((180, 180))
     i.paste(a, (80, 75))
-   
+    
     fmt = "%Y년 %m월 %d일"
     now_time = u.created_at + datetime.timedelta(hours=9)
     dc = now_time.strftime(fmt)
-   
+    
     d.text((320, 100), f"{u.name[:10]}..님 환영해요!", fill="white", font=font)
-    d.text((100, 283), f"아이디 : {u.id}", fill="white", font=font)
-    d.text((100, 338), f"가입일 : {dc}", fill="white", font=font)
-   
+    d.text((100, 280), f"아이디 : {u.id}", fill="white", font=font)
+    d.text((100, 335), f"가입일 : {dc}", fill="white", font=font)
+    
     b = io.BytesIO()
     i.save(b, "PNG")
     b.seek(0)
